@@ -247,6 +247,38 @@ export default function App() {
     setIsSettingsOpen(false);
   };
 
+  const handleExport = () => {
+    if (filteredData.length === 0) return;
+    
+    // Prepare data for export
+    const exportData = filteredData.map(item => ({
+      ID: item.order_id,
+      Tanggal: item.tanggal instanceof Date ? format(item.tanggal, 'yyyy-MM-dd') : item.tanggal,
+      Nama: item.nama,
+      WhatsApp: item.no_wa,
+      Produk: item.produk,
+      Qty: item.qty,
+      Total_Bayar: item.total_bayar,
+      Komisi: item.komisi,
+      Metode: item.metode
+    }));
+
+    const headers = Object.keys(exportData[0]);
+    const csvContent = [
+      headers.join(','),
+      ...exportData.map(row => headers.map(h => `"${String(row[h as keyof typeof row]).replace(/"/g, '""')}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `herbantara_sales_export_${format(new Date(), 'yyyyMMdd_HHmm')}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="h-screen overflow-hidden bg-slate-50 flex text-slate-600 selection:bg-indigo-100 selection:text-indigo-900 relative">
       {/* Background Mesh Gradient */}
@@ -415,7 +447,10 @@ export default function App() {
                 >
                   <RefreshCw size={14} />
                 </button>
-                <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200">
+                <button 
+                  onClick={handleExport}
+                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200"
+                >
                   <Download size={14} />
                   <span className="hidden sm:inline">Export</span>
                 </button>
@@ -578,7 +613,12 @@ export default function App() {
                     <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></div>
                     <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none mt-0.5">Stream Active</span>
                   </div>
-                  <button className="text-[11px] font-black text-indigo-600 hover:text-indigo-800 uppercase tracking-widest transition-all">Bulk Export</button>
+                  <button 
+                    onClick={handleExport}
+                    className="text-[11px] font-black text-indigo-600 hover:text-indigo-800 uppercase tracking-widest transition-all"
+                  >
+                    Bulk Export
+                  </button>
                 </div>
               </div>
               <div className="overflow-x-auto">
