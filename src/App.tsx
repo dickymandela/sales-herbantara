@@ -105,9 +105,9 @@ const ChartCard = ({ title, children, subtitle, index, icon: Icon }: any) => (
     initial={{ opacity: 0, scale: 0.98 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ delay: 0.4 + (index * 0.1) }}
-    className="bg-white/80 backdrop-blur-2xl p-8 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-white h-full flex flex-col hover:shadow-indigo-100/40 transition-all duration-500 group"
+    className="bg-white/80 backdrop-blur-2xl p-8 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-white flex flex-col hover:shadow-indigo-100/40 transition-all duration-500 group w-full h-full"
   >
-    <div className="mb-8 flex justify-between items-center">
+    <div className="mb-8 flex justify-between items-center shrink-0">
       <div className="flex items-center gap-4">
         {Icon && (
           <div className="p-2.5 bg-slate-50 text-slate-400 rounded-xl group-hover:bg-indigo-50 group-hover:text-indigo-500 transition-colors">
@@ -125,8 +125,10 @@ const ChartCard = ({ title, children, subtitle, index, icon: Icon }: any) => (
         <button className="px-3 py-1 text-[10px] font-bold text-slate-400 hover:text-indigo-600 transition-colors">M</button>
       </div>
     </div>
-    <div className="flex-1 min-h-[300px] w-full relative">
-      {children}
+    <div className="flex-1 w-full relative min-h-[350px] min-w-0">
+      <div className="absolute inset-0">
+        {children}
+      </div>
     </div>
   </motion.div>
 );
