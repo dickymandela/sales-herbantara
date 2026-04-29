@@ -520,7 +520,7 @@ export default function App() {
         {/* Stats Grid - Visible on all analytics tabs but tailored to overview */}
         {activeTab === 'overview' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
               <StatCard title="Total Revenue" value={formatIDR(totalRevenue)} trend={12.4} index={0} color="indigo" icon={DollarSign} />
               <StatCard title="Total Orders" value={totalOrders} trend={8.1} index={1} color="emerald" icon={ShoppingBag} />
               <StatCard title="Total Komisi" value={formatIDR(totalKomisi)} trend={15.2} index={2} color="violet" icon={TrendingUp} />
