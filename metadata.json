@@ -1,5 +1,5 @@
 {
-  "name": "Sales Herbantara",
+  "name": "Herbantara",
   "description": "A modern sales dashboard synchronized with Google Sheets data via Google Apps Script.",
   "requestFramePermissions": [],
   "majorCapabilities": []

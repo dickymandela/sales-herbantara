@@ -14,7 +14,7 @@
  * 5. Select type: 'Web App'.
  * 6. Execute as: 'Me'.
  * 7. Who has access: 'Anyone'.
- * 8. Copy the Web App URL and paste it into your Sales Herbantara Dashboard.
+ * 8. Copy the Web App URL and paste it into your Herbantara Dashboard.
  */
 
 function doGet() {

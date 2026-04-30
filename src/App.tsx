@@ -273,7 +273,7 @@ export default function App() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.setAttribute('href', url);
-    link.setAttribute('download', `sales_herbantara_export_${format(new Date(), 'yyyyMMdd_HHmm')}.csv`);
+    link.setAttribute('download', `herbantara_export_${format(new Date(), 'yyyyMMdd_HHmm')}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -295,7 +295,7 @@ export default function App() {
             <LayoutDashboard className="text-white" size={24} />
           </div>
           <div className="hidden lg:block overflow-hidden">
-            <span className="font-black text-slate-900 text-2xl tracking-tighter block">Sales Herbantara</span>
+            <span className="font-black text-slate-900 text-2xl tracking-tighter block">Herbantara</span>
             <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] -mt-1">Natura Analytics</div>
           </div>
         </div>
