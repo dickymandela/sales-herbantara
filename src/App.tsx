@@ -179,6 +179,10 @@ export default function App() {
       }
 
       return matchesSearch && matchesProduct && matchesMethod && matchesMonth && matchesCommission;
+    }).sort((a, b) => {
+      const dateA = a.tanggal instanceof Date ? a.tanggal.getTime() : parseISO(a.tanggal as string).getTime();
+      const dateB = b.tanggal instanceof Date ? b.tanggal.getTime() : parseISO(b.tanggal as string).getTime();
+      return dateB - dateA;
     });
   }, [data, searchTerm, selectedProduct, selectedMethod, selectedMonth, selectedCommission]);
 
@@ -644,9 +648,13 @@ export default function App() {
                           initial={{ opacity: 0 }} 
                           animate={{ opacity: 1 }} 
                           exit={{ opacity: 0 }} 
-                          className="hover:bg-indigo-50/20 transition-all group cursor-default"
+                          whileHover={{ x: 4 }}
+                          className="hover:bg-slate-50/50 transition-all group cursor-default relative"
                         >
-                          <td className="px-8 py-6 text-xs font-black text-slate-400 font-mono tracking-tighter group-hover:text-indigo-600 transition-colors uppercase">{row.order_id}</td>
+                          <td className="px-8 py-6 text-xs font-black text-slate-400 font-mono tracking-tighter group-hover:text-indigo-600 transition-colors uppercase relative">
+                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-600 scale-y-0 group-hover:scale-y-100 transition-transform origin-top duration-300"></div>
+                            {row.order_id}
+                          </td>
                           <td className="px-8 py-6 text-xs font-bold text-slate-500">{row.tanggal instanceof Date ? format(row.tanggal, 'MMM dd, yyyy') : format(parseISO(row.tanggal as string), 'MMM dd, yyyy')}</td>
                           <td className="px-8 py-6">
                             <div className="flex flex-col">
