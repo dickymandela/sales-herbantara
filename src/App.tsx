@@ -48,19 +48,19 @@ const COMMISSION_RANGES = [
 
 const StatCard = ({ title, value, trend, index, icon: Icon, color = 'indigo', darkMode }: any) => {
   const variants: Record<string, string> = {
-    indigo: 'bg-indigo-50/50 border-indigo-100 text-indigo-600 dark:bg-indigo-500/10 dark:border-indigo-500/20 dark:text-indigo-400',
-    emerald: 'bg-emerald-50/50 border-emerald-100 text-emerald-600 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400',
-    violet: 'bg-violet-50/50 border-violet-100 text-violet-600 dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-400',
-    amber: 'bg-amber-50/50 border-amber-100 text-amber-600 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400',
-    rose: 'bg-rose-50/50 border-rose-100 text-rose-600 dark:bg-rose-500/10 dark:border-rose-500/20 dark:text-rose-400',
+    indigo: darkMode ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400' : 'bg-indigo-50/50 border-indigo-100 text-indigo-600',
+    emerald: darkMode ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-emerald-50/50 border-emerald-100 text-emerald-600',
+    violet: darkMode ? 'bg-violet-500/10 border-violet-500/20 text-violet-400' : 'bg-violet-50/50 border-violet-100 text-violet-600',
+    amber: darkMode ? 'bg-amber-500/10 border-amber-500/20 text-amber-400' : 'bg-amber-50/50 border-amber-100 text-amber-600',
+    rose: darkMode ? 'bg-rose-500/10 border-rose-500/20 text-rose-400' : 'bg-rose-50/50 border-rose-100 text-rose-600',
   };
 
   const glowVariants: Record<string, string> = {
-    indigo: 'shadow-indigo-100/50 dark:shadow-indigo-900/10',
-    emerald: 'shadow-emerald-100/50 dark:shadow-emerald-900/10',
-    violet: 'shadow-violet-100/50 dark:shadow-violet-900/10',
-    amber: 'shadow-amber-100/50 dark:shadow-amber-900/10',
-    rose: 'shadow-rose-100/50 dark:shadow-rose-900/10',
+    indigo: darkMode ? 'shadow-indigo-900/10' : 'shadow-indigo-100/50',
+    emerald: darkMode ? 'shadow-emerald-900/10' : 'shadow-emerald-100/50',
+    violet: darkMode ? 'shadow-violet-900/10' : 'shadow-violet-100/50',
+    amber: darkMode ? 'shadow-amber-900/10' : 'shadow-amber-100/50',
+    rose: darkMode ? 'shadow-rose-900/10' : 'shadow-rose-100/50',
   };
 
   return (
@@ -68,7 +68,7 @@ const StatCard = ({ title, value, trend, index, icon: Icon, color = 'indigo', da
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1, type: 'spring', stiffness: 100 }}
-      className={`relative overflow-hidden bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 rounded-[2rem] shadow-xl ${glowVariants[color]} border border-white/60 dark:border-white/5 flex flex-col justify-between h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 group`}
+      className={`relative overflow-hidden p-6 rounded-[2rem] shadow-xl ${glowVariants[color]} border flex flex-col justify-between h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 group ${darkMode ? 'bg-slate-900/80 border-white/5' : 'bg-white/80 border-white/60'} backdrop-blur-xl`}
     >
       {/* Decorative Background Shape */}
       <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full opacity-[0.03] dark:opacity-[0.05] group-hover:opacity-[0.06] dark:group-hover:opacity-[0.1] transition-opacity blur-2xl ${variants[color].split(' ')[0]}`}></div>
@@ -87,7 +87,7 @@ const StatCard = ({ title, value, trend, index, icon: Icon, color = 'indigo', da
 
       <div>
         <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 font-black mb-1">{title}</div>
-        <div className="text-2xl font-black text-slate-900 dark:text-white tracking-tight truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{value}</div>
+        <div className="text-2xl font-black text-slate-900 dark:text-white tracking-tight truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors uppercase">{value}</div>
       </div>
       
       <div className="mt-4 pt-4 border-t border-slate-50 dark:border-white/5 flex items-center justify-between">
@@ -102,12 +102,12 @@ const StatCard = ({ title, value, trend, index, icon: Icon, color = 'indigo', da
   );
 };
 
-const ChartCard = ({ title, children, subtitle, index, icon: Icon }: any) => (
+const ChartCard = ({ title, children, subtitle, index, icon: Icon, darkMode }: any) => (
   <motion.div 
     initial={{ opacity: 0, scale: 0.98 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ delay: 0.4 + (index * 0.1) }}
-    className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl p-8 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 dark:shadow-black/20 border border-white dark:border-white/5 flex flex-col hover:shadow-indigo-100/40 dark:hover:shadow-indigo-900/20 transition-all duration-500 group w-full h-full"
+    className={`p-8 rounded-[2.5rem] shadow-2xl border flex flex-col transition-all duration-500 group w-full h-full ${darkMode ? 'bg-slate-900/80 shadow-black/20 border-white/5 hover:shadow-indigo-900/20' : 'bg-white/80 shadow-slate-200/50 border-white hover:shadow-indigo-100/40'} backdrop-blur-2xl`}
   >
     <div className="mb-8 flex justify-between items-center shrink-0">
       <div className="flex items-center gap-4">
@@ -158,10 +158,14 @@ export default function App() {
 
   // --- Theme Effect ---
   React.useEffect(() => {
+    const root = window.document.documentElement;
+    const body = window.document.body;
     if (darkMode) {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
+      body.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
+      body.classList.remove('dark');
     }
   }, [darkMode]);
 
@@ -296,7 +300,7 @@ export default function App() {
   };
 
   return (
-    <div className={`h-screen overflow-hidden bg-slate-50 dark:bg-slate-950 flex text-slate-600 dark:text-slate-400 selection:bg-indigo-100 dark:selection:bg-indigo-900/30 selection:text-indigo-900 dark:selection:text-indigo-200 relative transition-colors duration-500 ${darkMode ? 'dark' : ''}`}>
+    <div className={`h-screen overflow-hidden flex relative transition-colors duration-500 ${darkMode ? 'dark bg-slate-950 text-slate-400' : 'bg-slate-50 text-slate-600'} selection:bg-indigo-100 dark:selection:bg-indigo-900/30 selection:text-indigo-900 dark:selection:text-indigo-200`}>
       {/* Background Mesh Gradient */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         <div className={`absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-indigo-200/30 dark:bg-indigo-900/20 blur-[120px] transition-colors duration-700`}></div>
@@ -305,7 +309,7 @@ export default function App() {
       </div>
 
       {/* Sidebar - Optimized for Tablet (Icons Only) & Desktop (Full) */}
-      <aside className="w-20 lg:w-72 border-r border-slate-200/60 dark:border-white/5 bg-white/70 dark:bg-slate-900/70 backdrop-blur-3xl flex flex-col items-center lg:items-start py-10 shrink-0 hidden md:flex z-40 transition-all duration-500 ease-in-out shadow-[1px_0_10px_rgba(0,0,0,0.02)]">
+      <aside className={`w-20 lg:w-72 border-r ${darkMode ? 'border-white/5 bg-slate-900/70' : 'border-slate-200/60 bg-white/70'} backdrop-blur-3xl flex flex-col items-center lg:items-start py-10 shrink-0 hidden md:flex z-40 transition-all duration-500 ease-in-out shadow-[1px_0_10px_rgba(0,0,0,0.02)]`}>
         <div className="px-0 lg:px-8 mb-16 flex items-center gap-4">
           <div className="w-12 h-12 bg-gradient-to-tr from-indigo-600 to-violet-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-indigo-200 dark:shadow-indigo-950 shrink-0 transition-transform hover:rotate-6">
             <LayoutDashboard className="text-white" size={24} />
@@ -595,16 +599,16 @@ export default function App() {
         {activeTab === 'overview' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              <StatCard title="Total Revenue" value={formatIDR(totalRevenue)} trend={12.4} index={0} color="indigo" icon={DollarSign} />
-              <StatCard title="Total Orders" value={totalOrders} trend={8.1} index={1} color="emerald" icon={ShoppingBag} />
-              <StatCard title="Total Komisi" value={formatIDR(totalKomisi)} trend={15.2} index={2} color="violet" icon={TrendingUp} />
-              <StatCard title="Items Sold" value={totalUnits} trend={-2.4} index={3} color="amber" icon={Package} />
-              <StatCard title="Avg Order Value" value={formatIDR(avgOrderValue)} trend={15.0} index={4} color="rose" icon={Truck} />
+              <StatCard title="Total Revenue" value={formatIDR(totalRevenue)} trend={12.4} index={0} color="indigo" icon={DollarSign} darkMode={darkMode} />
+              <StatCard title="Total Orders" value={totalOrders} trend={8.1} index={1} color="emerald" icon={ShoppingBag} darkMode={darkMode} />
+              <StatCard title="Total Komisi" value={formatIDR(totalKomisi)} trend={15.2} index={2} color="violet" icon={TrendingUp} darkMode={darkMode} />
+              <StatCard title="Items Sold" value={totalUnits} trend={-2.4} index={3} color="amber" icon={Package} darkMode={darkMode} />
+              <StatCard title="Avg Order Value" value={formatIDR(avgOrderValue)} trend={15.0} index={4} color="rose" icon={Truck} darkMode={darkMode} />
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
               <div className="xl:col-span-2">
-                <ChartCard title="Revenue Growth" subtitle="Daily settlement performance" index={0} icon={TrendingUp}>
+                <ChartCard title="Revenue Growth" subtitle="Daily settlement performance" index={0} icon={TrendingUp} darkMode={darkMode}>
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={salesByDate}>
                       <defs>
@@ -614,11 +618,11 @@ export default function App() {
                         </linearGradient>
                       </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={darkMode ? "rgba(255,255,255,0.05)" : "#f1f5f9"} />
-                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: darkMode ? '#64748b' : '#94a3b8', fontSize: 10, fontWeight: 700 }} dy={10} />
-                    <YAxis axisLine={false} tickLine={false} tick={{ fill: darkMode ? '#64748b' : '#94a3b8', fontSize: 10, fontWeight: 700 }} tickFormatter={(val) => `${val/1000}k`} />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: darkMode ? '#ffffff' : '#94a3b8', fontSize: 10, fontWeight: 700 }} dy={10} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fill: darkMode ? '#ffffff' : '#94a3b8', fontSize: 10, fontWeight: 700 }} tickFormatter={(val) => `${val/1000}k`} />
                     <RechartsTooltip 
                       contentStyle={{ borderRadius: '24px', border: 'none', backgroundColor: darkMode ? '#0f172a' : '#ffffff', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.15)', padding: '20px' }} 
-                      itemStyle={{ fontWeight: 800, fontSize: '13px', color: darkMode ? '#e2e8f0' : '#475569' }}
+                      itemStyle={{ fontWeight: 800, fontSize: '13px', color: darkMode ? '#ffffff' : '#475569' }}
                       formatter={(val: number) => [formatIDR(val), 'Revenue']} 
                     />
                       <Area type="monotone" dataKey="total" stroke="#6366f1" strokeWidth={4} fillOpacity={1} fill="url(#colorRevenue)" />
@@ -626,7 +630,7 @@ export default function App() {
                   </ResponsiveContainer>
                 </ChartCard>
               </div>
-              <ChartCard title="Product Distribution" subtitle="Inventory share by units" index={1} icon={Package}>
+              <ChartCard title="Product Distribution" subtitle="Inventory share by units" index={1} icon={Package} darkMode={darkMode}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie data={productStats} cx="50%" cy="50%" innerRadius={80} outerRadius={100} paddingAngle={10} dataKey="qty" stroke="none" cornerRadius={12}>
@@ -641,8 +645,8 @@ export default function App() {
               </ChartCard>
             </div>
 
-            <motion.div initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] shadow-2xl shadow-slate-200/50 dark:shadow-black/20 border border-white dark:border-white/5 overflow-hidden mb-12 transition-all">
-              <div className="p-8 border-b border-slate-50 dark:border-white/5 flex items-center justify-between bg-white/40 dark:bg-slate-900/40">
+            <motion.div initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className={`rounded-[2.5rem] shadow-2xl border overflow-hidden mb-12 transition-all ${darkMode ? 'bg-slate-900/80 shadow-black/20 border-white/5' : 'bg-white/80 shadow-slate-200/50 border-white'} backdrop-blur-2xl`}>
+              <div className={`p-8 border-b flex items-center justify-between ${darkMode ? 'border-white/5 bg-slate-900/40' : 'border-slate-50 bg-white/40'}`}>
                 <div>
                   <h3 className="text-base font-black text-slate-900 dark:text-white tracking-tight">Real-time Transaction Ledger</h3>
                   <p className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-0.5">Live feed from cloud synchronization</p>
@@ -686,11 +690,11 @@ export default function App() {
                           whileHover={{ x: 4 }}
                           className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-all group cursor-default relative"
                         >
-                          <td className="px-8 py-6 text-xs font-black text-slate-400 dark:text-slate-500 font-mono tracking-tighter group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors uppercase relative">
+                          <td className="px-8 py-6 text-xs font-black text-slate-400 dark:text-slate-300 font-mono tracking-tighter group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors uppercase relative">
                             <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-600 scale-y-0 group-hover:scale-y-100 transition-transform origin-top duration-300"></div>
                             {row.order_id}
                           </td>
-                          <td className="px-8 py-6 text-xs font-bold text-slate-500 dark:text-slate-400">{row.tanggal instanceof Date ? format(row.tanggal, 'MMM dd, yyyy') : format(parseISO(row.tanggal as string), 'MMM dd, yyyy')}</td>
+                          <td className="px-8 py-6 text-xs font-bold text-slate-500 dark:text-slate-200">{row.tanggal instanceof Date ? format(row.tanggal, 'MMM dd, yyyy') : format(parseISO(row.tanggal as string), 'MMM dd, yyyy')}</td>
                           <td className="px-8 py-6">
                             <div className="flex flex-col">
                               <span className="text-sm font-black text-slate-800 dark:text-slate-100 tracking-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{row.nama}</span>
@@ -698,9 +702,9 @@ export default function App() {
                             </div>
                           </td>
                           <td className="px-8 py-6"><span className="text-sm text-slate-600 dark:text-slate-300 font-black tracking-tight">{row.produk}</span></td>
-                          <td className="px-8 py-6 text-xs font-black text-slate-500 dark:text-slate-400 text-right font-mono">{row.qty}</td>
+                          <td className="px-8 py-6 text-xs font-black text-slate-500 dark:text-white text-right font-mono">{row.qty}</td>
                           <td className="px-8 py-6 text-sm font-black text-slate-900 dark:text-white text-right tracking-tight">{formatIDR(row.total_bayar)}</td>
-                          <td className="px-8 py-6 text-sm font-black text-emerald-600 dark:text-emerald-400 text-right tracking-tight">{formatIDR(row.komisi)}</td>
+                          <td className="px-8 py-6 text-sm font-black text-emerald-600 dark:text-white text-right tracking-tight">{formatIDR(row.komisi)}</td>
                           <td className="px-8 py-6 text-center">
                             <span className={`text-[9px] font-black px-3 py-1.5 rounded-xl uppercase tracking-widest border shadow-sm ${row.metode === 'COD' ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100 dark:border-amber-500/20' : 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-500/20'}`}>
                               {row.metode}
@@ -727,19 +731,19 @@ export default function App() {
         {activeTab === 'orders' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12">
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
-              <ChartCard title="Product Volume" subtitle="Units sold by category" icon={Package}>
+              <ChartCard title="Product Volume" subtitle="Units sold by category" icon={Package} darkMode={darkMode}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={productStats}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={darkMode ? "rgba(255,255,255,0.05)" : "#f1f5f9"} />
-                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: darkMode ? '#64748b' : '#94a3b8', fontSize: 10, fontWeight: 700 }} />
-                    <YAxis axisLine={false} tickLine={false} tick={{ fill: darkMode ? '#64748b' : '#94a3b8', fontSize: 10, fontWeight: 700 }} />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: darkMode ? '#ffffff' : '#94a3b8', fontSize: 10, fontWeight: 700 }} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fill: darkMode ? '#ffffff' : '#94a3b8', fontSize: 10, fontWeight: 700 }} />
                     <RechartsTooltip contentStyle={{ borderRadius: '24px', border: 'none', backgroundColor: darkMode ? '#0f172a' : '#ffffff', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.15)' }} itemStyle={{ color: darkMode ? '#e2e8f0' : '#475569' }} />
                     <Bar dataKey="qty" fill="#6366f1" radius={[8, 8, 0, 0]} barSize={40} />
                   </BarChart>
                 </ResponsiveContainer>
               </ChartCard>
 
-              <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl p-10 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 dark:shadow-black/20 border border-white dark:border-white/5">
+              <div className={`p-10 rounded-[2.5rem] shadow-2xl border transition-all duration-500 ${darkMode ? 'bg-slate-900/80 shadow-black/20 border-white/5' : 'bg-white/80 shadow-slate-200/50 border-white'} backdrop-blur-2xl`}>
                 <div className="flex items-center gap-4 mb-8">
                    <div className="p-3 bg-slate-50 dark:bg-slate-800 text-slate-400 rounded-2xl">
                       <Search size={22} />
@@ -757,7 +761,7 @@ export default function App() {
                            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[i % COLORS.length] }}></div>
                            <span className="text-sm font-black text-slate-700 dark:text-slate-200">{item.name}</span>
                          </div>
-                         <span className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">{item.qty} units</span>
+                         <span className="text-xs font-black text-slate-400 dark:text-white uppercase tracking-wider">{item.qty} units</span>
                        </div>
                        <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                          <motion.div 
@@ -779,8 +783,8 @@ export default function App() {
         {activeTab === 'customers' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12">
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
-               <div className="xl:col-span-2 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] shadow-2xl shadow-slate-200/50 dark:shadow-black/20 border border-white dark:border-white/5 overflow-hidden">
-                  <div className="p-8 border-b border-slate-50 dark:border-white/5 flex items-center justify-between">
+               <div className={`xl:col-span-2 rounded-[2.5rem] shadow-2xl border overflow-hidden transition-all duration-500 ${darkMode ? 'bg-slate-900/80 shadow-black/20 border-white/5' : 'bg-white/80 shadow-slate-200/50 border-white'} backdrop-blur-2xl`}>
+                  <div className={`p-8 border-b flex items-center justify-between ${darkMode ? 'border-white/5' : 'border-slate-50'}`}>
                     <div>
                       <h3 className="text-base font-black text-slate-900 dark:text-white tracking-tight">Top Client Performance</h3>
                       <p className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-0.5">Ranking by lifetime value</p>
@@ -808,9 +812,9 @@ export default function App() {
                                   <span className="text-sm font-black text-slate-800 dark:text-slate-100">{customer.name}</span>
                                </div>
                             </td>
-                            <td className="px-8 py-5 text-sm font-bold text-slate-500 dark:text-slate-400 text-right">{customer.orders}</td>
-                            <td className="px-8 py-5 text-sm font-bold text-slate-400 dark:text-slate-500 text-right">{customer.uniqueProducts}</td>
-                            <td className="px-8 py-5 text-sm font-black text-indigo-600 dark:text-indigo-400 text-right">{formatIDR(customer.revenue)}</td>
+                            <td className="px-8 py-5 text-sm font-bold text-slate-500 dark:text-white text-right">{customer.orders}</td>
+                            <td className="px-8 py-5 text-sm font-bold text-slate-400 dark:text-white text-right">{customer.uniqueProducts}</td>
+                            <td className="px-8 py-5 text-sm font-black text-indigo-600 dark:text-white text-right">{formatIDR(customer.revenue)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -834,7 +838,7 @@ export default function App() {
                     </div>
                   </motion.div>
 
-                  <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl p-10 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 dark:shadow-black/20 border border-white dark:border-white/5">
+                  <div className={`p-10 rounded-[2.5rem] shadow-2xl border transition-all duration-500 ${darkMode ? 'bg-slate-900/80 shadow-black/20 border-white/5' : 'bg-white/80 shadow-slate-200/50 border-white'} backdrop-blur-2xl`}>
                     <h3 className="text-sm font-black text-slate-900 dark:text-white tracking-tight mb-8">Segment Distribution</h3>
                     <ResponsiveContainer width="100%" height={220}>
                        <PieChart>
@@ -872,12 +876,12 @@ export default function App() {
         {activeTab === 'analytics' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                <StatCard title="Total Komisi Pipeline" value={formatIDR(totalKomisi)} trend={12.5} index={0} icon={TrendingUp} color="violet" />
-                <StatCard title="Projected Revenue" value={formatIDR(totalRevenue * 1.2)} trend={20} index={1} icon={DollarSign} color="indigo" />
-                <StatCard title="Order Efficiency" value="98.2%" trend={2} index={2} icon={Truck} color="emerald" />
+                <StatCard title="Total Komisi Pipeline" value={formatIDR(totalKomisi)} trend={12.5} index={0} icon={TrendingUp} color="violet" darkMode={darkMode} />
+                <StatCard title="Projected Revenue" value={formatIDR(totalRevenue * 1.2)} trend={20} index={1} icon={DollarSign} color="indigo" darkMode={darkMode} />
+                <StatCard title="Order Efficiency" value="98.2%" trend={2} index={2} icon={Truck} color="emerald" darkMode={darkMode} />
              </div>
              
-             <ChartCard title="Revenue Distribution Over Time" subtitle="Komparasi volume transaksi harian" icon={TrendingUp}>
+             <ChartCard title="Revenue Distribution Over Time" subtitle="Komparasi volume transaksi harian" icon={TrendingUp} darkMode={darkMode}>
                 <ResponsiveContainer width="100%" height={350}>
                   <AreaChart data={salesByDate}>
                     <defs>
