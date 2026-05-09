@@ -111,20 +111,33 @@ export function useSalesData() {
         if (!response.ok) throw new Error('Failed to fetch from GAS');
         const json = await response.json();
         
+        // Filter out summary rows (e.g. rows that don't have an order_id or are total rows)
+        const rawData = Array.isArray(json) ? json.filter((item: any) => {
+          const orderId = String(item.order_id || '').trim();
+          const nama = String(item.nama || '').toLowerCase();
+          return orderId !== '' && !nama.includes('total');
+        }) : [];
+
         // Basic normalization if needed
-        const normalized = json.map((item: any) => {
-          const qty = Number(item.qty);
-          const produk = String(item.produk);
+        const normalized = rawData.map((item: any) => {
+          const qty = Number(item.qty) || 0;
+          const produk = String(item.produk || '');
+          // Gunakan komisi dari sheet jika ada dan valid (angka), jika tidak baru hitung manual
+          const sheetKomisi = Number(item.komisi);
+          const komisi = !isNaN(sheetKomisi) && sheetKomisi !== 0 
+            ? sheetKomisi 
+            : calculateKomisi(produk, qty);
+
           return {
             ...item,
-            tanggal: new Date(item.tanggal),
+            tanggal: item.tanggal ? new Date(item.tanggal) : new Date(),
             qty,
-            harga_satuan: Number(item.harga_satuan),
-            subtotal: Number(item.subtotal),
-            ongkir: Number(item.ongkir),
-            potongan_ongkir: Number(item.potongan_ongkir),
-            total_bayar: Number(item.total_bayar),
-            komisi: calculateKomisi(produk, qty),
+            harga_satuan: Number(item.harga_satuan) || 0,
+            subtotal: Number(item.subtotal) || 0,
+            ongkir: Number(item.ongkir) || 0,
+            potongan_ongkir: Number(item.potongan_ongkir) || 0,
+            total_bayar: Number(item.total_bayar) || 0,
+            komisi: komisi,
           };
         });
         

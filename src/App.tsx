@@ -206,6 +206,8 @@ export default function App() {
   const totalOrders = filteredData.length;
   const totalUnits = useMemo(() => filteredData.reduce((acc, curr) => acc + curr.qty, 0), [filteredData]);
   const totalKomisi = useMemo(() => filteredData.reduce((acc, curr) => acc + curr.komisi, 0), [filteredData]);
+  const totalOngkir = useMemo(() => filteredData.reduce((acc, curr) => acc + curr.ongkir, 0), [filteredData]);
+  const totalPotonganOngkir = useMemo(() => filteredData.reduce((acc, curr) => acc + curr.potongan_ongkir, 0), [filteredData]);
   const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
 
   const productStats = useMemo(() => {
@@ -598,12 +600,14 @@ export default function App() {
         {/* Stats Grid - Visible on all analytics tabs but tailored to overview */}
         {activeTab === 'overview' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
               <StatCard title="Total Revenue" value={formatIDR(totalRevenue)} trend={12.4} index={0} color="indigo" icon={DollarSign} darkMode={darkMode} />
               <StatCard title="Total Orders" value={totalOrders} trend={8.1} index={1} color="emerald" icon={ShoppingBag} darkMode={darkMode} />
               <StatCard title="Total Komisi" value={formatIDR(totalKomisi)} trend={15.2} index={2} color="violet" icon={TrendingUp} darkMode={darkMode} />
               <StatCard title="Items Sold" value={totalUnits} trend={-2.4} index={3} color="amber" icon={Package} darkMode={darkMode} />
               <StatCard title="Avg Order Value" value={formatIDR(avgOrderValue)} trend={15.0} index={4} color="rose" icon={Truck} darkMode={darkMode} />
+              <StatCard title="Total Ongkir" value={formatIDR(totalOngkir)} index={5} color="indigo" icon={Truck} darkMode={darkMode} />
+              <StatCard title="Potongan Ongkir" value={formatIDR(totalPotonganOngkir)} index={6} color="emerald" icon={DollarSign} darkMode={darkMode} />
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
@@ -672,11 +676,14 @@ export default function App() {
                       <th className="px-8 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5">Timestamp</th>
                       <th className="px-8 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5">Origin / Client</th>
                       <th className="px-8 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5">SKU / Product</th>
-                      <th className="px-8 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5 text-right">Vol.</th>
-                      <th className="px-8 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5 text-right">Gross Amount</th>
-                      <th className="px-8 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5 text-right">Fee</th>
-                      <th className="px-8 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5 text-center">Protocol</th>
-                      <th className="px-8 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5"></th>
+                      <th className="px-4 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5 text-right">Vol.</th>
+                      <th className="px-4 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5 text-right">Subtotal</th>
+                      <th className="px-4 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5 text-right">Ship.</th>
+                      <th className="px-4 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5 text-right">Disc.</th>
+                      <th className="px-4 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5 text-right">Gross Amount</th>
+                      <th className="px-4 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5 text-right">Fee</th>
+                      <th className="px-4 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5 text-center">Protocol</th>
+                      <th className="px-4 py-5 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-b border-slate-50 dark:border-white/5"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50 dark:divide-white/5">
@@ -702,10 +709,13 @@ export default function App() {
                             </div>
                           </td>
                           <td className="px-8 py-6"><span className="text-sm text-slate-600 dark:text-slate-300 font-black tracking-tight">{row.produk}</span></td>
-                          <td className="px-8 py-6 text-xs font-black text-slate-500 dark:text-white text-right font-mono">{row.qty}</td>
-                          <td className="px-8 py-6 text-sm font-black text-slate-900 dark:text-white text-right tracking-tight">{formatIDR(row.total_bayar)}</td>
-                          <td className="px-8 py-6 text-sm font-black text-emerald-600 dark:text-white text-right tracking-tight">{formatIDR(row.komisi)}</td>
-                          <td className="px-8 py-6 text-center">
+                          <td className="px-4 py-6 text-xs font-black text-slate-500 dark:text-white text-right font-mono">{row.qty}</td>
+                          <td className="px-4 py-6 text-xs font-black text-slate-500 dark:text-slate-400 text-right">{formatIDR(row.subtotal)}</td>
+                          <td className="px-4 py-6 text-xs font-black text-slate-500 dark:text-slate-400 text-right">{formatIDR(row.ongkir)}</td>
+                          <td className="px-4 py-6 text-xs font-black text-rose-500 dark:text-rose-400 text-right">-{formatIDR(row.potongan_ongkir)}</td>
+                          <td className="px-4 py-6 text-sm font-black text-slate-900 dark:text-white text-right tracking-tight">{formatIDR(row.total_bayar)}</td>
+                          <td className="px-4 py-6 text-sm font-black text-emerald-600 dark:text-white text-right tracking-tight">{formatIDR(row.komisi)}</td>
+                          <td className="px-4 py-6 text-center">
                             <span className={`text-[9px] font-black px-3 py-1.5 rounded-xl uppercase tracking-widest border shadow-sm ${row.metode === 'COD' ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100 dark:border-amber-500/20' : 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-500/20'}`}>
                               {row.metode}
                             </span>
